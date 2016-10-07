@@ -19,7 +19,7 @@ public class DirectoryResourceControlTest {
     @Test
     public void getFormats() throws Exception {
         List<String> supportedFormats = control.getFormats("foo");
-        String [] expectedFormats = {"java.class", "java.properties"};
+        String [] expectedFormats = {"java.class", "java.properties", "joconner.json"};
         assertArrayEquals(expectedFormats, supportedFormats.toArray());
     }
 
@@ -77,5 +77,16 @@ public class DirectoryResourceControlTest {
         assertEquals("Good morning!", hello);
     }
 
+    @Test
+    public void newBundleProvidesNonJsonResourceBundle() throws Exception {
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new DirectoryResourceControl());
+        assertFalse(bundle instanceof JsonResourceBundle);
+    }
+
+    @Test
+    public void newBundleProvidesJsonResourceBundle() throws Exception {
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new DirectoryResourceControl());
+        assertTrue(bundle instanceof JsonResourceBundle);
+    }
 
 }
