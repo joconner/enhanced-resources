@@ -7,12 +7,11 @@ import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static com.sun.tools.doclint.Entity.ge;
+import static javafx.scene.input.KeyCode.M;
 
 
 /**
@@ -23,11 +22,11 @@ public class JsonResourceBundle extends ResourceBundle {
     private JsonObject jsonObject;
 
 
-    protected JsonResourceBundle() {
+    private JsonResourceBundle() {
 
     }
 
-    protected JsonResourceBundle(InputStream stream) {
+    JsonResourceBundle(InputStream stream) {
         JsonValue jsonValue = null;
 
         try (Reader jsonBundleReader = new InputStreamReader(stream, "UTF-8")) {
@@ -47,7 +46,9 @@ public class JsonResourceBundle extends ResourceBundle {
     protected Object handleGetObject(String key) {
         JsonValue value = jsonObject.get(key);
         String strValue = null;
-        if (value.isString()) {
+        if (value == null) {
+            strValue = null;
+        } else if (value.isString()) {
             strValue = value.asString();
         } else if (value.isObject()) {
             JsonObject valueObject = (JsonObject) value;
@@ -56,7 +57,25 @@ public class JsonResourceBundle extends ResourceBundle {
         return strValue;
     }
 
+    @Override
     public Enumeration<String> getKeys() {
-        return null;
+        Set<String> keySet = new HashSet<>();
+        keySet.addAll(parent.keySet());
+        keySet.addAll(jsonObject.names());
+
+        return new Enumeration<String>() {
+            Iterator<String> iterator = keySet.iterator();
+
+            @Override
+            public boolean hasMoreElements() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public String nextElement() {
+                return iterator.next();
+            }
+        };
     }
+
 }
