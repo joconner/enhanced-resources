@@ -2,18 +2,14 @@ package com.joconner.i18n;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.*;
-
-import static com.sun.tools.javac.jvm.ByteCodes.ret;
 
 
 /**
- * DirectoryResourceControl is a ResourceBundle controller that helps a ResourceBundle
+ * PackagedResourceControl is a ResourceBundle controller that helps a ResourceBundle
  * factory find resources in subdirectories of the base resource file. For example, if
  * your baseName resource is com.example.res.Foo, then this controller will help a
  * ResourceBundle find translations in subpackages that are named for the target locale. For example,
@@ -27,10 +23,10 @@ import static com.sun.tools.javac.jvm.ByteCodes.ret;
  *
  * @author joconner
  */
-public class DirectoryResourceControl extends ResourceBundle.Control {
+public class PackagedResourceControl extends ResourceBundle.Control {
 
 
-    public DirectoryResourceControl() {
+    public PackagedResourceControl() {
 
     }
 
@@ -64,6 +60,7 @@ public class DirectoryResourceControl extends ResourceBundle.Control {
     @Override
     public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
             throws IllegalAccessException, InstantiationException, IOException {
+
         ResourceBundle bundle = null;
         if (format.equals("joconner.json")) {
             String bundleName = toBundleName(baseName, locale);
@@ -73,37 +70,29 @@ public class DirectoryResourceControl extends ResourceBundle.Control {
             }
             final ClassLoader classLoader = loader;
             final boolean reloadFlag = reload;
-            InputStream stream = null;
-            try {
-                stream = AccessController.doPrivileged(
-                        new PrivilegedExceptionAction<InputStream>() {
-                            public InputStream run() throws IOException {
-                                InputStream is = null;
-                                if (reloadFlag) {
-                                    URL url = classLoader.getResource(resourceName);
-                                    if (url != null) {
-                                        URLConnection connection = url.openConnection();
-                                        if (connection != null) {
-                                            // Disable caches to get fresh data for
-                                            // reloading.
-                                            connection.setUseCaches(false);
-                                            is = connection.getInputStream();
-                                        }
-                                    }
-                                } else {
-                                    is = classLoader.getResourceAsStream(resourceName);
-                                }
-                                return is;
-                            }
-                        });
-            } catch (PrivilegedActionException e) {
-                throw (IOException) e.getException();
+            InputStream is = null;
+
+            if (reloadFlag) {
+                URL url = classLoader.getResource(resourceName);
+                if (url != null) {
+                    URLConnection connection = url.openConnection();
+                    if (connection != null) {
+                        // Disable caches to get fresh data for
+                        // reloading.
+                        connection.setUseCaches(false);
+                        is = connection.getInputStream();
+                    }
+                }
+            } else {
+                is = classLoader.getResourceAsStream(resourceName);
             }
-            if (stream != null) {
+
+            InputStreamReader reader = new InputStreamReader(is, "UTF-8");
+            if (reader != null) {
                 try {
-                    bundle = new JsonResourceBundle(stream);
+                    bundle = new JsonResourceBundle(reader);
                 } finally {
-                    stream.close();
+                    reader.close();
                 }
             }
         } else {

@@ -13,7 +13,7 @@ public class JsonResourceBundleTest {
 
     @Test(expected = NullPointerException.class)
     public void handleGetObjectWithNullKey() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new DirectoryResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new PackagedResourceControl());
         JsonResourceBundle jsonBundle = null;
         if (bundle instanceof JsonResourceBundle) {
             jsonBundle = (JsonResourceBundle)bundle;
@@ -23,7 +23,7 @@ public class JsonResourceBundleTest {
 
     @Test
     public void handleGetObject() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new DirectoryResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new PackagedResourceControl());
         assertTrue(bundle instanceof JsonResourceBundle);
 
         JsonResourceBundle jsonBundle =  (JsonResourceBundle)bundle;
@@ -37,7 +37,7 @@ public class JsonResourceBundleTest {
 
     @Test
     public void getKeys() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new DirectoryResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new PackagedResourceControl());
         assertTrue(bundle instanceof JsonResourceBundle);
         JsonResourceBundle jsonBundle =  (JsonResourceBundle)bundle;
 
@@ -48,7 +48,20 @@ public class JsonResourceBundleTest {
             keyList.add(keys.nextElement());
         }
         assertEquals(3, keyList.size());
+    }
+
+    @Test
+    public void getString() throws Exception {
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new PackagedResourceControl());
+        assertNotNull(bundle);
+        String greeting = bundle.getString("GREETING_MORNING");
+        assertEquals("おはようございます！", greeting);
+        greeting = bundle.getString("GREETING_NOON");
+        assertEquals("Good afternoon!", greeting);
+        greeting = bundle.getString("GREETING_NIGHT");
+        assertEquals("こんばんは！", greeting);
 
     }
+
 
 }

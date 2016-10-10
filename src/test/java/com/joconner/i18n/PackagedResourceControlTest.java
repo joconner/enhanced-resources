@@ -2,7 +2,6 @@ package com.joconner.i18n;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -12,9 +11,9 @@ import static org.junit.Assert.*;
 /**
  * @author joconner
  */
-public class DirectoryResourceControlTest {
+public class PackagedResourceControlTest {
 
-    private DirectoryResourceControl control = new DirectoryResourceControl();
+    private PackagedResourceControl control = new PackagedResourceControl();
 
     @Test
     public void getFormats() throws Exception {
@@ -60,7 +59,7 @@ public class DirectoryResourceControlTest {
 
     @Test
     public void getBundleForen_ca() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.CANADA, new DirectoryResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.CANADA, new PackagedResourceControl());
         String hello = bundle.getString("GREETING_MORNING");
         assertEquals("It's morning, hoser!", hello);
         String goodNight = bundle.getString("GREETING_NIGHT");
@@ -70,7 +69,7 @@ public class DirectoryResourceControlTest {
 
     @Test
     public void getBundleForen() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new DirectoryResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new PackagedResourceControl());
         String goodNight = bundle.getString("GREETING_NIGHT");
         assertEquals("Good evening!", goodNight);
         String hello = bundle.getString("GREETING_MORNING");
@@ -79,13 +78,13 @@ public class DirectoryResourceControlTest {
 
     @Test
     public void newBundleProvidesNonJsonResourceBundle() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new DirectoryResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new PackagedResourceControl());
         assertFalse(bundle instanceof JsonResourceBundle);
     }
 
     @Test
     public void newBundleProvidesJsonResourceBundle() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new DirectoryResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new PackagedResourceControl());
         assertTrue(bundle instanceof JsonResourceBundle);
     }
 

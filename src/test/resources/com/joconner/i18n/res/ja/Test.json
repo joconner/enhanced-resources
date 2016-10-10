@@ -1,4 +1,6 @@
 {
-  "GREETING_MORNING": "おはようございます！"
-
+  "GREETING_MORNING": {
+    "value": "おはようございます！"
+  },
+  "GREETING_NIGHT": "こんばんは！"
 }
