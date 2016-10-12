@@ -27,11 +27,11 @@ public class JsonResourceControlTest {
     public void toBundleName() throws Exception {
         Locale[] locales = {Locale.CHINA, Locale.forLanguageTag("en-US-Windows")};
         String[] baseNames = {"Message", "foo.Message", "foo.bar.Message"};
-        String [] expected = {"zh-cn.Message", "foo.zh-cn.Message", "foo.bar.zh-cn.Message",
-                              "en-us-windows.Message", "foo.en-us-windows.Message", "foo.bar.en-us-windows.Message"};
+        String[] expected = {"zh-cn.Message", "foo.zh-cn.Message", "foo.bar.zh-cn.Message",
+                "en-us-windows.Message", "foo.en-us-windows.Message", "foo.bar.en-us-windows.Message"};
         int x = 0;
-        for (Locale locale: locales) {
-        for (String baseName : baseNames) {
+        for (Locale locale : locales) {
+            for (String baseName : baseNames) {
                 String bundleName = control.toBundleName(baseName, locale);
                 assertEquals(expected[x++], bundleName);
             }
@@ -43,10 +43,10 @@ public class JsonResourceControlTest {
         JsonResourceControl control = new JsonResourceControl(false);
         Locale[] locales = {Locale.CHINA, Locale.forLanguageTag("en-US-Windows")};
         String[] baseNames = {"Message", "foo.Message", "foo.bar.Message"};
-        String [] expected = {"Message_zh_CN", "foo.Message_zh_CN", "foo.bar.Message_zh_CN",
+        String[] expected = {"Message_zh_CN", "foo.Message_zh_CN", "foo.bar.Message_zh_CN",
                 "Message_en_US_Windows", "foo.Message_en_US_Windows", "foo.bar.Message_en_US_Windows"};
         int x = 0;
-        for (Locale locale: locales) {
+        for (Locale locale : locales) {
             for (String baseName : baseNames) {
                 String bundleName = control.toBundleName(baseName, locale);
                 assertEquals(expected[x++], bundleName);
@@ -56,14 +56,14 @@ public class JsonResourceControlTest {
 
     @Test
     public void toResourceName() throws Exception {
-        String [] bundleNames = {"Message", "zh-cn.Message", "foo.zh-cn.Message", "foo.bar.zh-cn.Message",
+        String[] bundleNames = {"Message", "zh-cn.Message", "foo.zh-cn.Message", "foo.bar.zh-cn.Message",
                 "en-us-windows.Message", "foo.en-us-windows.Message", "foo.bar.en-us-windows.Message"};
-        String [] expected = {"Message.properties", "zh-cn/Message.properties", "foo/zh-cn/Message.properties", "foo/bar/zh-cn/Message.properties",
+        String[] expected = {"Message.properties", "zh-cn/Message.properties", "foo/zh-cn/Message.properties", "foo/bar/zh-cn/Message.properties",
                 "en-us-windows/Message.properties", "foo/en-us-windows/Message.properties", "foo/bar/en-us-windows/Message.properties"};
 
         int x = 0;
-        for(String bundleName: bundleNames) {
-            String actualResourceName = control.toResourceName(bundleName,"properties");
+        for (String bundleName : bundleNames) {
+            String actualResourceName = control.toResourceName(bundleName, "properties");
             assertEquals(expected[x++], actualResourceName);
         }
     }
@@ -71,14 +71,14 @@ public class JsonResourceControlTest {
     @Test
     public void toNonPackagedResourceName() throws Exception {
         JsonResourceControl control = new JsonResourceControl(false);
-        String [] bundleNames = {"Message", "Message_zh_CN", "foo.Message_zh_CN", "foo.bar.Message_zh_CN",
+        String[] bundleNames = {"Message", "Message_zh_CN", "foo.Message_zh_CN", "foo.bar.Message_zh_CN",
                 "Message_en_US-Windows", "foo.Message_en_US_Windows", "foo.bar.Message_en_US_Windows"};
-        String [] expected = {"Message.properties", "Message_zh_CN.properties", "foo/Message_zh_CN.properties", "foo/bar/Message_zh_CN.properties",
+        String[] expected = {"Message.properties", "Message_zh_CN.properties", "foo/Message_zh_CN.properties", "foo/bar/Message_zh_CN.properties",
                 "Message_en_US-Windows.properties", "foo/Message_en_US_Windows.properties", "foo/bar/Message_en_US_Windows.properties"};
 
         int x = 0;
-        for(String bundleName: bundleNames) {
-            String actualResourceName = control.toResourceName(bundleName,"properties");
+        for (String bundleName : bundleNames) {
+            String actualResourceName = control.toResourceName(bundleName, "properties");
             assertEquals(expected[x++], actualResourceName);
         }
     }

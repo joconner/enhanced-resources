@@ -1,7 +1,6 @@
 package com.joconner.i18n;
 
 
-
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
@@ -11,7 +10,6 @@ import java.util.*;
 
 
 /**
- *
  * A JsonResourceBundle understands JSON-based resource files. In a JsonResourceBundle, each key must have a string
  * value or an object value. Implement a JsonResourceBundle by creating a text file containing key-value pairs.
  * The key-value pairs are part of a larger JSON object. Values can be either simple
@@ -32,6 +30,7 @@ import java.util.*;
  * You use and create JsonResourceBundle objects by
  * 1) create a JSON resource file as described above
  * 2) create a ResourceBundle using ResourceBundle.getBundle and provide a JsonResourceControl
+ *
  * @author joconner
  */
 public class JsonResourceBundle extends ResourceBundle {
@@ -43,10 +42,8 @@ public class JsonResourceBundle extends ResourceBundle {
     }
 
     /**
-     *
      * Constructor will typically be called from a ResourceBundle.Control subclass, specifically the
      * JsonResourceControl.
-     *
      *
      * @param reader
      * @throws IOException

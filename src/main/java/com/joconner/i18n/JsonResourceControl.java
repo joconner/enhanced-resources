@@ -20,7 +20,7 @@ import java.util.*;
  * Resources for Mexican Spanish (es-MX) should be stored here:
  * com.example.res.es-mx.FOO
  *
- *  Resource subpackage names should be lowercase BCP-47 language tag identifiers.
+ * Resource subpackage names should be lowercase BCP-47 language tag identifiers.
  *
  * @author joconner
  */
@@ -58,7 +58,7 @@ public class JsonResourceControl extends ResourceBundle.Control {
     @Override
     public String toBundleName(String baseName, Locale locale) {
         String bundleName = null;
-        if(packageBased) {
+        if (packageBased) {
 
             int nBasePackage = baseName.lastIndexOf(".");
             String basePackageName = nBasePackage > 0 ? baseName.substring(0, nBasePackage) : "";

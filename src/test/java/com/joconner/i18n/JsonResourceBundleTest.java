@@ -16,7 +16,7 @@ public class JsonResourceBundleTest {
         ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceControl());
         JsonResourceBundle jsonBundle = null;
         if (bundle instanceof JsonResourceBundle) {
-            jsonBundle = (JsonResourceBundle)bundle;
+            jsonBundle = (JsonResourceBundle) bundle;
             jsonBundle.handleGetObject(null);
         }
     }
@@ -26,7 +26,7 @@ public class JsonResourceBundleTest {
         ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceControl());
         assertTrue(bundle instanceof JsonResourceBundle);
 
-        JsonResourceBundle jsonBundle =  (JsonResourceBundle)bundle;
+        JsonResourceBundle jsonBundle = (JsonResourceBundle) bundle;
         String greeting = (String) jsonBundle.handleGetObject("GREETING_MORNING");
         assertEquals("おはようございます！", greeting);
 
@@ -39,12 +39,12 @@ public class JsonResourceBundleTest {
     public void getKeys() throws Exception {
         ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceControl());
         assertTrue(bundle instanceof JsonResourceBundle);
-        JsonResourceBundle jsonBundle =  (JsonResourceBundle)bundle;
+        JsonResourceBundle jsonBundle = (JsonResourceBundle) bundle;
 
         Enumeration<String> keys = jsonBundle.getKeys();
         assertNotNull(keys);
         List<String> keyList = new ArrayList<>();
-        while(keys.hasMoreElements()) {
+        while (keys.hasMoreElements()) {
             keyList.add(keys.nextElement());
         }
         assertEquals(3, keyList.size());
