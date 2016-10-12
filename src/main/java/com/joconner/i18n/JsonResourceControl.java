@@ -9,30 +9,45 @@ import java.util.*;
 
 
 /**
- * PackagedResourceControl is a ResourceBundle controller that helps a ResourceBundle
- * factory find resources in subdirectories of the base resource file. For example, if
+ * JsonResourceControl is a ResourceBundle controller that helps a ResourceBundle.getBundle
+ * factory find resources in sub-packages of the base resource file. For example, if
  * your baseName resource is com.example.res.Foo, then this controller will help a
  * ResourceBundle find translations in subpackages that are named for the target locale. For example,
  * resources for the fr-CA language will be in the following:
+ *
  * com.example.res.fr-ca.Foo
- * <p>
+ *
  * Resources for Mexican Spanish (es-MX) should be stored here:
  * com.example.res.es-mx.FOO
- * <p>
- * Resource subpackage names should be lowercase BCP-47 language tag identifiers.
+ *
+ *  Resource subpackage names should be lowercase BCP-47 language tag identifiers.
  *
  * @author joconner
  */
-public class PackagedResourceControl extends ResourceBundle.Control {
+public class JsonResourceControl extends ResourceBundle.Control {
+    private static final String JSON_SUFFIX = "json";
+    private static final List<String> FORMAT_JSON = Arrays.asList(JSON_SUFFIX);
+    private static final List<String> supportedFormats;
+
+    static {
+        supportedFormats = new ArrayList<>(ResourceBundle.Control.FORMAT_DEFAULT);
+        supportedFormats.add(JSON_SUFFIX);
+    }
+
+    private boolean packageBased;
 
 
-    public PackagedResourceControl() {
+    public JsonResourceControl() {
+        packageBased = true;
+    }
 
+    public JsonResourceControl(boolean isPackageBased) {
+        this.packageBased = isPackageBased;
     }
 
     @Override
     public List<String> getFormats(String baseName) {
-        return Arrays.asList("java.class", "java.properties", "joconner.json");
+        return supportedFormats;
     }
 
     /**
@@ -42,19 +57,26 @@ public class PackagedResourceControl extends ResourceBundle.Control {
      */
     @Override
     public String toBundleName(String baseName, Locale locale) {
-        int nBasePackage = baseName.lastIndexOf(".");
-        String basePackageName = nBasePackage > 0 ? baseName.substring(0, nBasePackage) : "";
-        String resName = nBasePackage > 0 ? baseName.substring(nBasePackage + 1) : baseName;
-        String langSubPackage = locale.equals(Locale.ROOT) ? "" : locale.toLanguageTag().toLowerCase();
-        StringBuilder strBuilder = new StringBuilder();
-        if (nBasePackage > 0) {
-            strBuilder.append(basePackageName).append(".");
+        String bundleName = null;
+        if(packageBased) {
+
+            int nBasePackage = baseName.lastIndexOf(".");
+            String basePackageName = nBasePackage > 0 ? baseName.substring(0, nBasePackage) : "";
+            String resName = nBasePackage > 0 ? baseName.substring(nBasePackage + 1) : baseName;
+            String langSubPackage = locale.equals(Locale.ROOT) ? "" : locale.toLanguageTag().toLowerCase();
+            StringBuilder strBuilder = new StringBuilder();
+            if (nBasePackage > 0) {
+                strBuilder.append(basePackageName).append(".");
+            }
+            if (langSubPackage.length() > 0) {
+                strBuilder.append(langSubPackage).append(".");
+            }
+            strBuilder.append(resName);
+            bundleName = strBuilder.toString();
+        } else {
+            bundleName = super.toBundleName(baseName, locale);
         }
-        if (langSubPackage.length() > 0) {
-            strBuilder.append(langSubPackage).append(".");
-        }
-        strBuilder.append(resName);
-        return strBuilder.toString();
+        return bundleName;
     }
 
     @Override
@@ -62,9 +84,9 @@ public class PackagedResourceControl extends ResourceBundle.Control {
             throws IllegalAccessException, InstantiationException, IOException {
 
         ResourceBundle bundle = null;
-        if (format.equals("joconner.json")) {
+        if (format.equals(JSON_SUFFIX)) {
             String bundleName = toBundleName(baseName, locale);
-            final String resourceName = toResourceName(bundleName, "json");
+            final String resourceName = toResourceName(bundleName, JSON_SUFFIX);
             if (resourceName == null) {
                 return bundle;
             }

@@ -31,7 +31,7 @@ import java.util.*;
  *
  * You use and create JsonResourceBundle objects by
  * 1) create a JSON resource file as described above
- * 2) create a ResourceBundle using ResourceBundle.getBundle and provide a PackagedResourceControl
+ * 2) create a ResourceBundle using ResourceBundle.getBundle and provide a JsonResourceControl
  * @author joconner
  */
 public class JsonResourceBundle extends ResourceBundle {
@@ -44,7 +44,8 @@ public class JsonResourceBundle extends ResourceBundle {
 
     /**
      *
-     * Constructor will typically be called from the ResourceBundle.Control, specifically the PackagedResourceControl.
+     * Constructor will typically be called from a ResourceBundle.Control subclass, specifically the
+     * JsonResourceControl.
      *
      *
      * @param reader
@@ -60,14 +61,14 @@ public class JsonResourceBundle extends ResourceBundle {
         if (jsonValue.isObject()) {
             jsonResource = (JsonObject) jsonValue;
         } else {
-            throw new IOException("The requested file is not the correct format for joconner.json bundles.");
+            throw new IOException("The requested file is not the correct format for json bundles.");
         }
     }
 
     @Override
     protected Object handleGetObject(String key) {
-        if (jsonResource == null) {
-            return null;
+        if (key == null) {
+            throw new NullPointerException("The key is null.");
         }
         JsonValue value = jsonResource.get(key);
         String strValue = null;
