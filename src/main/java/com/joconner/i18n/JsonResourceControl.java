@@ -37,23 +37,49 @@ public class JsonResourceControl extends ResourceBundle.Control {
     private boolean packageBased;
 
 
+    /**
+     * Creates a new JsonResourceControl that expects localized bundle files
+     * to be in subdirectories under the root package.
+     */
     public JsonResourceControl() {
         packageBased = true;
     }
 
+    /**
+     * Creates a new JsonResourceControl that uses localized bundle files in
+     * subdirectories of the root package if isPackageBased is true,
+     * otherwise uses the Java platform's default organization of bundles.
+     * @param isPackageBased, true if you want subdirectory/subpackage-based
+     *                        resource bundle files, false otherwise
+     */
     public JsonResourceControl(boolean isPackageBased) {
         this.packageBased = isPackageBased;
     }
 
+    /**
+     * Returns the list of bundle file formats supported by
+     * JsonResourceBundle. JsonResourceBundle supports bundle formats in the
+     * following order "java.class", "java.properties", and "json".
+     *
+     * @param baseName, the basename of the resource bundle.
+     * @return a string list of supported formats
+     */
     @Override
     public List<String> getFormats(String baseName) {
         return supportedFormats;
     }
 
     /**
-     * Convert a baseName resource file of the form package-name.ResourceName to
-     * package-name.locale-string.ResourceName. This controller separates localized resources into
-     * their own subpackage and does extend the ResourceName.
+     * If this is a package-based control, converts a baseName resource file of
+     * the form package-name.ResourceName to
+     * package-name.locale-string.ResourceName. This controller separates
+     * localized resources into their own subpackage and does extend the
+     * ResourceName.
+     *
+     * If this is not a package-based control, converts a baseName resource
+     * file to standard bundle names as provided by the default Java
+     * ResourceBundle.Control class.
+     *
      */
     @Override
     public String toBundleName(String baseName, Locale locale) {
@@ -79,6 +105,19 @@ public class JsonResourceControl extends ResourceBundle.Control {
         return bundleName;
     }
 
+    /**
+     * See the Java platforms default description of this method.
+     * http://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.Control.html
+     * @param baseName
+     * @param locale
+     * @param format
+     * @param loader
+     * @param reload
+     * @return
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws IOException
+     */
     @Override
     public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
             throws IllegalAccessException, InstantiationException, IOException {
