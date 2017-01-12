@@ -1,28 +1,61 @@
-# JSON Packaged Resource Bundle
+# Enhanced Resource Bundles
 
-Resource bundles are a group of related files that contain localized 
-resources, typically text. The most common resource type is a text-only 
-**properties** file containing key-value pairs. You can learn more about 
-Resource bundles generally from their default [Javadoc documentation](http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html) and other tutorials. 
+A ResourceBundle is a set of localizable resources, typically text. To 
+localized user interfaces, you typically create one or more resource bundles 
+in a default language, submit those to localizers and translators, and then 
+include all bundles in your source tree. You can learn more about Resource bundles 
+from their [Javadoc 
+documentation](http://docs.oracle
+.com/javase/8/docs/api/java/util/ResourceBundle.html).
+ 
+The default ResourceBundle types, formats, and lookup strategies haven't 
+changed in decades. However, one significant feature allows us to enhance all
+ these defaults. By extending either the _ResourceBundle_ or _ResourceBundle
+ .Control_ classes, you can improve the default behaviors significantly. This
+  project showcases several enhancements that customers have requested, or 
+  complained about, numerous times over the years:
 
-The Java default ResourceBundle types and organization have neither changed 
-nor provided any significant new options in decades. However, one significant 
-feature allows us to modify bundle organization layout and even file 
-format. This project, _json-packaged-bundle_ provides subclasses of 
-_ResourceBundle_ and _ResourceBundle.Control_ that allow you to create 
-bundles with the following features:
+1. UTF-8 encoded properties instead of Latin-1 or ASCII-ENCODED ones
+2. JSON objects to store key-value pairs
+3. Directory-based bundle organizations 
 
-1. Use JSON objects to store key-value pairs.
-2. Organize bundles in a directory-oriented structure in which translated 
-files for a target locale all exist within a specific subdirectory/package. 
+## Default Property Files
+Property files are plain-text files that contain localizable resources. They 
+contain simple key-value pairs. They look like this:
 
-## Motivation for JSON Files
-JSON is a localization file format shared with JavaScript localization 
-libraries like Dojo I18n. JSON files should be encoded in UTF-8. Unlike 
-the default **properties** files, JSON files don't need to be 
-backslash-escaped to encode characters outside of the Latin-1 or ISO-8859-1 
-range.
+```
+HELLO=I'm just a string, nothing special here.
+CAVEAT=But my encoding is LATIN-1!
+```
 
-## Motivation for Package-Oriented Bundles
-
+Although property files are effective, they're horribly awkward in one 
+significant way: they must be encoded as ISO-8859-1. That means you cannot 
+represent most Unicode characters without special escaping techniques. 
   
+If you want to create a Japanese language bundle, for example, you must 
+escape the Japanese characters to the form `\uXXXX`, where `XXXX` is the 
+Unicode hexadecimal codepoint value. The Java Development Kit (JDK) has  
+a tool called _native2ascii_ to facilitate this for you. This additional 
+escaping makes translated resource bundles practically impossible to visually
+ read. For example, the word for "book" is "本"in Japanese. Using the default 
+ property bundle loading mechanism, you'd have to ASCII-escape the property 
+ file like this:
+ 
+```
+ BOOK=\u672C
+```
+
+This is simply unacceptable in my opinion. You really want to see the correct
+ character in its natural visual form:
+ 
+```
+BOOK=本
+```
+
+Fortunately, we don't have to sacrifice usability and readability. We can 
+create our own _ResourceBundle.Control_ class to override the default loading
+ strategy of the _ResourceBundle.getBundle_ method.  
+
+## UTF-8 Enabled ResourceBundle Control
+
+
