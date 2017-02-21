@@ -13,9 +13,9 @@ import java.util.ResourceBundle;
 /**
  * Created by joconner on 1/11/17.
  */
-public class Utf8ResourceControl extends ResourceBundle.Control {
+public class Utf8ResourceBundleControl extends ResourceBundle.Control {
 
-    public Utf8ResourceControl() {}
+    public Utf8ResourceBundleControl() {}
 
     public ResourceBundle newBundle(String baseName, Locale locale, String format,
                                     ClassLoader loader, boolean reload)

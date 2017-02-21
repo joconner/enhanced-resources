@@ -12,9 +12,9 @@ import static org.junit.Assert.*;
 /**
  * @author joconner
  */
-public class JsonResourceControlTest {
+public class JsonResourceBundleControlTest {
 
-    private JsonResourceControl control = new JsonResourceControl();
+    private JsonResourceBundleControl control = new JsonResourceBundleControl();
 
     @Test
     public void getFormats() throws Exception {
@@ -40,7 +40,7 @@ public class JsonResourceControlTest {
 
     @Test
     public void toNonPackageBasedBundleName() throws Exception {
-        JsonResourceControl control = new JsonResourceControl(false);
+        JsonResourceBundleControl control = new JsonResourceBundleControl(false);
         Locale[] locales = {Locale.CHINA, Locale.forLanguageTag("en-US-Windows")};
         String[] baseNames = {"Message", "foo.Message", "foo.bar.Message"};
         String[] expected = {"Message_zh_CN", "foo.Message_zh_CN", "foo.bar.Message_zh_CN",
@@ -70,7 +70,7 @@ public class JsonResourceControlTest {
 
     @Test
     public void toNonPackagedResourceName() throws Exception {
-        JsonResourceControl control = new JsonResourceControl(false);
+        JsonResourceBundleControl control = new JsonResourceBundleControl(false);
         String[] bundleNames = {"Message", "Message_zh_CN", "foo.Message_zh_CN", "foo.bar.Message_zh_CN",
                 "Message_en_US-Windows", "foo.Message_en_US_Windows", "foo.bar.Message_en_US_Windows"};
         String[] expected = {"Message.properties", "Message_zh_CN.properties", "foo/Message_zh_CN.properties", "foo/bar/Message_zh_CN.properties",
@@ -95,7 +95,7 @@ public class JsonResourceControlTest {
 
     @Test
     public void getBundleForen() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new JsonResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new JsonResourceBundleControl());
         String goodNight = bundle.getString("GREETING_NIGHT");
         assertEquals("Good evening!", goodNight);
         String hello = bundle.getString("GREETING_MORNING");
@@ -104,13 +104,13 @@ public class JsonResourceControlTest {
 
     @Test
     public void newBundleProvidesNonJsonResourceBundle() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new JsonResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.ENGLISH, new JsonResourceBundleControl());
         assertFalse(bundle instanceof JsonResourceBundle);
     }
 
     @Test
     public void newBundleProvidesJsonResourceBundle() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl());
         assertTrue(bundle instanceof JsonResourceBundle);
     }
 

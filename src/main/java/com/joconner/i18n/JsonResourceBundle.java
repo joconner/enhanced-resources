@@ -29,7 +29,7 @@ import java.util.*;
  *
  * You use and create JsonResourceBundle objects by
  * 1) create a JSON resource file as described above
- * 2) create a ResourceBundle using ResourceBundle.getBundle and provide a JsonResourceControl
+ * 2) create a ResourceBundle using ResourceBundle.getBundle and provide a JsonResourceBundleControl
  *
  * @author joconner
  */
@@ -43,7 +43,7 @@ public class JsonResourceBundle extends ResourceBundle {
 
     /**
      * Constructor will typically be called from a ResourceBundle.Control subclass, specifically the
-     * JsonResourceControl.
+     * JsonResourceBundleControl.
      *
      * @param reader
      * @throws IOException

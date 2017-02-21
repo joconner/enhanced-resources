@@ -9,11 +9,11 @@ import java.util.ResourceBundle;
 /**
  * Created by joconner on 1/11/17.
  */
-public class Utf8ResourceControlTest {
+public class Utf8ResourceBundleControlTest {
 
     @Test
     public void testDefaultResources() {
-        ResourceBundle.Control utf8Control = new Utf8ResourceControl();
+        ResourceBundle.Control utf8Control = new Utf8ResourceBundleControl();
         ResourceBundle bundle =
                 ResourceBundle.getBundle("com.joconner.i18n.res.Utf8Resources", Locale.ROOT, utf8Control);
         String hello = bundle.getString("HELLO");
@@ -22,7 +22,7 @@ public class Utf8ResourceControlTest {
 
     @Test
     public void testJapaneseResources() {
-        ResourceBundle.Control utf8Control = new Utf8ResourceControl();
+        ResourceBundle.Control utf8Control = new Utf8ResourceBundleControl();
         ResourceBundle bundle =
                 ResourceBundle.getBundle("com.joconner.i18n.res.Utf8Resources", Locale.JAPANESE, utf8Control);
         String hello = bundle.getString("HELLO");

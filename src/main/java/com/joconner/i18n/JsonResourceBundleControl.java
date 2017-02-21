@@ -9,7 +9,7 @@ import java.util.*;
 
 
 /**
- * JsonResourceControl is a ResourceBundle controller that helps a ResourceBundle.getBundle
+ * JsonResourceBundleControl is a ResourceBundle controller that helps a ResourceBundle.getBundle
  * factory find resources in sub-packages of the base resource file. For example, if
  * your baseName resource is com.example.res.Foo, then this controller will help a
  * ResourceBundle find translations in subpackages that are named for the target locale. For example,
@@ -24,7 +24,7 @@ import java.util.*;
  *
  * @author joconner
  */
-public class JsonResourceControl extends ResourceBundle.Control {
+public class JsonResourceBundleControl extends ResourceBundle.Control {
     private static final String JSON_SUFFIX = "json";
     private static final List<String> FORMAT_JSON = Arrays.asList(JSON_SUFFIX);
     private static final List<String> supportedFormats;
@@ -38,21 +38,21 @@ public class JsonResourceControl extends ResourceBundle.Control {
 
 
     /**
-     * Creates a new JsonResourceControl that expects localized bundle files
+     * Creates a new JsonResourceBundleControl that expects localized bundle files
      * to be in subdirectories under the root package.
      */
-    public JsonResourceControl() {
+    public JsonResourceBundleControl() {
         packageBased = true;
     }
 
     /**
-     * Creates a new JsonResourceControl that uses localized bundle files in
+     * Creates a new JsonResourceBundleControl that uses localized bundle files in
      * subdirectories of the root package if isPackageBased is true,
      * otherwise uses the Java platform's default organization of bundles.
      * @param isPackageBased, true if you want subdirectory/subpackage-based
      *                        resource bundle files, false otherwise
      */
-    public JsonResourceControl(boolean isPackageBased) {
+    public JsonResourceBundleControl(boolean isPackageBased) {
         this.packageBased = isPackageBased;
     }
 
