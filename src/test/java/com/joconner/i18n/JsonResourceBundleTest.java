@@ -13,7 +13,7 @@ public class JsonResourceBundleTest {
 
     @Test(expected = NullPointerException.class)
     public void handleGetObjectWithNullKey() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl(true));
         JsonResourceBundle jsonBundle = null;
         if (bundle instanceof JsonResourceBundle) {
             jsonBundle = (JsonResourceBundle) bundle;
@@ -23,7 +23,7 @@ public class JsonResourceBundleTest {
 
     @Test
     public void handleGetObject() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl(true));
         assertTrue(bundle instanceof JsonResourceBundle);
 
         JsonResourceBundle jsonBundle = (JsonResourceBundle) bundle;
@@ -37,7 +37,7 @@ public class JsonResourceBundleTest {
 
     @Test
     public void getKeys() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl(true));
         assertTrue(bundle instanceof JsonResourceBundle);
         JsonResourceBundle jsonBundle = (JsonResourceBundle) bundle;
 
@@ -52,7 +52,7 @@ public class JsonResourceBundleTest {
 
     @Test
     public void getString() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl());
+        ResourceBundle bundle = ResourceBundle.getBundle("com.joconner.i18n.res.Test", Locale.JAPANESE, new JsonResourceBundleControl(true));
         assertNotNull(bundle);
         String greeting = bundle.getString("GREETING_MORNING");
         assertEquals("おはようございます！", greeting);

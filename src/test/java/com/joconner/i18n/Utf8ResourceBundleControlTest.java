@@ -30,4 +30,13 @@ public class Utf8ResourceBundleControlTest {
 
     }
 
+    @Test
+    public void testPackagedResource() {
+        ResourceBundle.Control utf8Control = new Utf8ResourceBundleControl(true);
+        ResourceBundle bundle =
+                ResourceBundle.getBundle("com.joconner.i18n.res.Utf8Resources", Locale.JAPANESE, utf8Control);
+        String hello = bundle.getString("GREETING_NIGHT");
+        assertEquals("こんばんは！", hello);
+    }
+
 }

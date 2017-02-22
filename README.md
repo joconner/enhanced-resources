@@ -14,6 +14,6 @@ changed in decades. However, one significant feature allows us to enhance all
  have requested -- or even complained about -- numerous times over the years:
 
 1. [UTF-8 encoded properties](docs/UTF8Resources.md) instead of Latin-1 or ASCII-ENCODED ones
-2. JSON objects to store key-value pairs (coming soon)
+2. [JSON objects](docs/JSONResources.md) to store key-value pairs
 3. Directory-based bundle organizations (coming soon)
 

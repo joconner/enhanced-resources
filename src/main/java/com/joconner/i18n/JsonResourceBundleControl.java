@@ -24,7 +24,7 @@ import java.util.*;
  *
  * @author joconner
  */
-public class JsonResourceBundleControl extends ResourceBundle.Control {
+public class JsonResourceBundleControl extends PackageBasedResourceControl {
     private static final String JSON_SUFFIX = "json";
     private static final List<String> FORMAT_JSON = Arrays.asList(JSON_SUFFIX);
     private static final List<String> supportedFormats;
@@ -34,15 +34,11 @@ public class JsonResourceBundleControl extends ResourceBundle.Control {
         supportedFormats.add(JSON_SUFFIX);
     }
 
-    private boolean packageBased;
-
-
     /**
-     * Creates a new JsonResourceBundleControl that expects localized bundle files
-     * to be in subdirectories under the root package.
+     * Creates a new JsonResourceBundleControl that reads localized bundle files
+     * from JSON files instead of property files.
      */
     public JsonResourceBundleControl() {
-        packageBased = true;
     }
 
     /**
@@ -53,7 +49,7 @@ public class JsonResourceBundleControl extends ResourceBundle.Control {
      *                        resource bundle files, false otherwise
      */
     public JsonResourceBundleControl(boolean isPackageBased) {
-        this.packageBased = isPackageBased;
+        super(isPackageBased);
     }
 
     /**
@@ -67,42 +63,6 @@ public class JsonResourceBundleControl extends ResourceBundle.Control {
     @Override
     public List<String> getFormats(String baseName) {
         return supportedFormats;
-    }
-
-    /**
-     * If this is a package-based control, converts a baseName resource file of
-     * the form package-name.ResourceName to
-     * package-name.locale-string.ResourceName. This controller separates
-     * localized resources into their own subpackage and does extend the
-     * ResourceName.
-     *
-     * If this is not a package-based control, converts a baseName resource
-     * file to standard bundle names as provided by the default Java
-     * ResourceBundle.Control class.
-     *
-     */
-    @Override
-    public String toBundleName(String baseName, Locale locale) {
-        String bundleName = null;
-        if (packageBased) {
-
-            int nBasePackage = baseName.lastIndexOf(".");
-            String basePackageName = nBasePackage > 0 ? baseName.substring(0, nBasePackage) : "";
-            String resName = nBasePackage > 0 ? baseName.substring(nBasePackage + 1) : baseName;
-            String langSubPackage = locale.equals(Locale.ROOT) ? "" : locale.toLanguageTag().toLowerCase();
-            StringBuilder strBuilder = new StringBuilder();
-            if (nBasePackage > 0) {
-                strBuilder.append(basePackageName).append(".");
-            }
-            if (langSubPackage.length() > 0) {
-                strBuilder.append(langSubPackage).append(".");
-            }
-            strBuilder.append(resName);
-            bundleName = strBuilder.toString();
-        } else {
-            bundleName = super.toBundleName(baseName, locale);
-        }
-        return bundleName;
     }
 
     /**
