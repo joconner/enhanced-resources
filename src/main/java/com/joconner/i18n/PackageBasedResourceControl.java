@@ -17,7 +17,7 @@ public class PackageBasedResourceControl extends ResourceBundle.Control {
      * subdirectories of the root package if isPackageBased is true,
      * otherwise uses the Java platform's default organization of bundles.
      * @param isPackageBased, true if you want subdirectory/subpackage-based
-     *                        resource bundle files, false otherwise
+     * resource bundle files, false otherwise
      */
 
     public PackageBasedResourceControl(boolean isPackageBased) {

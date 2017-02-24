@@ -1,6 +1,9 @@
 {
   "GREETING_MORNING": {
-    "value": "おはようございます！"
+    "value": "おはようございます！",
+    "@meta": {
+
+    }
   },
   "GREETING_NIGHT": "こんばんは！"
 }
