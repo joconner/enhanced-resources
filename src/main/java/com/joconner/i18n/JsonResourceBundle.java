@@ -22,8 +22,10 @@ import java.util.*;
  *     "key2": "Good afternoon!"
  *     "key3": {
  *         "value": "Good evening!",
- *         "meta-maxLength": 25,
- *         "meta-tone": "casual"
+ *         "@meta": {
+ *              "maxLength": 25,
+ *              "tone": "casual"
+ *         }
  *     }
  * }
  *

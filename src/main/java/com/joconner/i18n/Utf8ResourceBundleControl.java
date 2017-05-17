@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * Created by joconner on 1/11/17.
  */
-public class Utf8ResourceBundleControl extends PackageBasedResourceControl {
+public class Utf8ResourceBundleControl extends PackageableResourceControl {
 
 
     public Utf8ResourceBundleControl() {}
@@ -38,16 +38,7 @@ public class Utf8ResourceBundleControl extends PackageBasedResourceControl {
             final ClassLoader classLoader = loader;
             InputStream stream = null;
             if (reload) {
-                URL url = classLoader.getResource(resourceName);
-                if (url != null) {
-                    URLConnection connection = url.openConnection();
-                    if (connection != null) {
-                        // Disable caches to get fresh data for
-                        // reloading.
-                        connection.setUseCaches(false);
-                        stream = connection.getInputStream();
-                    }
-                }
+                stream = reload(resourceName, classLoader);
             } else {
                 stream = classLoader.getResourceAsStream(resourceName);
             }
@@ -63,6 +54,21 @@ public class Utf8ResourceBundleControl extends PackageBasedResourceControl {
             throw new IllegalArgumentException("Unknown format: " + format);
         }
         return bundle;
+    }
+
+    InputStream reload(String resourceName, ClassLoader classLoader) throws IOException {
+        InputStream stream = null;
+        URL url = classLoader.getResource(resourceName);
+        if (url != null) {
+            URLConnection connection = url.openConnection();
+            if (connection != null) {
+                // Disable caches to get fresh data for
+                // reloading.
+                connection.setUseCaches(false);
+                stream = connection.getInputStream();
+            }
+        }
+        return stream;
     }
 
 

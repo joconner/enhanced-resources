@@ -10,8 +10,9 @@ import java.util.*;
 
 /**
  * JsonResourceBundleControl is a ResourceBundle controller that helps a ResourceBundle.getBundle
- * factory find resources in sub-packages of the base resource file. For example, if
- * your baseName resource is com.example.res.Foo, then this controller will help a
+ * factory find resources in JSON files. Optionally, the control can be configured to also use
+ * package-based organization for resource bundles.
+ * <p>For example, if your baseName resource is com.example.res.Foo, then this controller will help a
  * ResourceBundle find translations in subpackages that are named for the target locale. For example,
  * resources for the fr-CA language will be in the following:
  *
@@ -24,7 +25,7 @@ import java.util.*;
  *
  * @author joconner
  */
-public class JsonResourceBundleControl extends PackageBasedResourceControl {
+public class JsonResourceBundleControl extends PackageableResourceControl {
     private static final String JSON_SUFFIX = "json";
     private static final List<String> FORMAT_JSON = Arrays.asList(JSON_SUFFIX);
     private static final List<String> supportedFormats;
@@ -94,16 +95,7 @@ public class JsonResourceBundleControl extends PackageBasedResourceControl {
             InputStream is = null;
 
             if (reloadFlag) {
-                URL url = classLoader.getResource(resourceName);
-                if (url != null) {
-                    URLConnection connection = url.openConnection();
-                    if (connection != null) {
-                        // Disable caches to get fresh data for
-                        // reloading.
-                        connection.setUseCaches(false);
-                        is = connection.getInputStream();
-                    }
-                }
+                is = reload(resourceName, classLoader);
             } else {
                 is = classLoader.getResourceAsStream(resourceName);
             }
@@ -121,4 +113,21 @@ public class JsonResourceBundleControl extends PackageBasedResourceControl {
         }
         return bundle;
     }
+
+    InputStream reload(String resourceName, ClassLoader classLoader) throws IOException {
+        InputStream stream = null;
+        URL url = classLoader.getResource(resourceName);
+        if (url != null) {
+            URLConnection connection = url.openConnection();
+            if (connection != null) {
+                // Disable caches to get fresh data for
+                // reloading.
+                connection.setUseCaches(false);
+                stream = connection.getInputStream();
+            }
+        }
+        return stream;
+    }
+
+
 }

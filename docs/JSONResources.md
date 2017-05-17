@@ -1,4 +1,4 @@
-# Using JSON as a ResourceBundle Format
+# Using JSON as a Java ResourceBundle Format
 
 A `ResourceBundle` is a Java file that holds localizable resources, typically
 strings in a `PropertyResourceBundle` or a `ListResourceBundle` implementation. 
@@ -15,4 +15,6 @@ or translation tool. Useful comments and metadata about a particular key-value
 pair are the most often needed items that translators request. Unfortunately, 
 they don't get that information from the most common resource bundle formats.
 
-## JSON Provides 
+## JSON Provides Options for Meta-Data
+
+    

@@ -1,26 +1,24 @@
 package com.joconner.i18n;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Created by joconner on 2/21/17.
+ * @author joconner
  */
-public class PackageBasedResourceControl extends ResourceBundle.Control {
+public class PackageableResourceControl extends ResourceBundle.Control {
 
-    protected boolean isPackageBased;
+    boolean isPackageBased;
 
-    public PackageBasedResourceControl() {}
+    public PackageableResourceControl() {
+        this(true);
+    }
 
-    /**
-     * Creates a new ResourceBundle.Control that uses localized bundle files in
-     * subdirectories of the root package if isPackageBased is true,
-     * otherwise uses the Java platform's default organization of bundles.
-     * @param isPackageBased, true if you want subdirectory/subpackage-based
-     * resource bundle files, false otherwise
-     */
-
-    public PackageBasedResourceControl(boolean isPackageBased) {
+    public PackageableResourceControl(boolean isPackageBased) {
         this.isPackageBased = isPackageBased;
     }
 
@@ -28,19 +26,17 @@ public class PackageBasedResourceControl extends ResourceBundle.Control {
      * If this is a package-based control, converts a baseName resource file of
      * the form package-name.ResourceName to
      * package-name.locale-string.ResourceName. This controller separates
-     * localized resources into their own subpackage and does extend the
+     * localized resources into their own subpackage and does not extend the
      * ResourceName.
-     *
+     * <p>
      * If this is not a package-based control, converts a baseName resource
      * file to standard bundle names as provided by the default Java
      * ResourceBundle.Control class.
-     *
      */
     @Override
     public String toBundleName(String baseName, Locale locale) {
         String bundleName = null;
         if (isPackageBased) {
-
             int nBasePackage = baseName.lastIndexOf(".");
             String basePackageName = nBasePackage > 0 ? baseName.substring(0, nBasePackage) : "";
             String resName = nBasePackage > 0 ? baseName.substring(nBasePackage + 1) : baseName;
